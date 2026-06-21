@@ -1,7 +1,11 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = "ToyNest <orders@toynest.com.au>";
+
+function getResend() {
+  if (!process.env.RESEND_API_KEY) return null;
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 export async function sendOrderConfirmation(
   to: string,
@@ -20,6 +24,8 @@ export async function sendOrderConfirmation(
     )
     .join("");
 
+  const resend = getResend();
+  if (!resend) return;
   return resend.emails.send({
     from: FROM,
     to,
@@ -58,6 +64,8 @@ export async function sendShippingUpdate(
   trackingNumber: string,
   trackingUrl?: string
 ) {
+  const resend = getResend();
+  if (!resend) return;
   return resend.emails.send({
     from: FROM,
     to,
@@ -80,6 +88,8 @@ export async function sendAbandonedCartEmail(
   name: string,
   items: Array<{ name: string; image: string; price: number }>
 ) {
+  const resend = getResend();
+  if (!resend) return;
   return resend.emails.send({
     from: FROM,
     to,
