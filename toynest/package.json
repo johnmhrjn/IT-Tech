@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "vercel-build": "prisma generate && prisma db push && ts-node --project tsconfig.json prisma/seed/index.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "prisma generate",
